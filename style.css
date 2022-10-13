@@ -1,0 +1,85 @@
+body{
+    margin-top: 300px;
+    margin-bottom: 100%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 0;
+    color: #677082; /*for text*/
+    font-family: Arial;
+    background-color: rgb(160, 125, 60);
+    
+}
+
+.frame{
+    --block-size:35px;
+    background-color: rgb(203, 230, 172);
+    border-radius: 15px;
+
+    /*centralize frame*/
+    position: absolute;
+    display: grid;
+
+}
+
+.board{
+    display: grid;
+    /*construct a board 12 x 12 | the const ROW & COL in script control the amount*/
+    grid-template-columns: repeat(12, var(--block-size));
+    grid-template-rows: repeat(12, var(--block-size));
+
+}
+
+/*Style the maze*/
+
+.block {
+    /*general block configuration*/
+    width: var(--block-size);
+    height: var(--block-size);
+    border-radius: 15px;
+}
+
+.empty{
+    background: white;
+}
+
+.wall{
+    background: green; 
+    box-sizing: border-box;
+}
+
+.diamond{
+    background: rgb(25, 70, 161); 
+    box-sizing: border-box;
+}
+
+.exit{
+    background: rgb(150, 150, 150); 
+    box-sizing: border-box;
+}
+
+.player{
+    background: rgb(192, 212, 9); 
+    box-sizing: border-box;
+}
+
+/*Score and texts*/
+.diamond-count,
+.footer {
+    line-height: 35px;
+    padding-left: 15px;
+}
+
+.diamond-count {
+    float: right;
+}
+
+.footer {
+    text-align: center
+}
+
+.help {
+    float: left;
+    font-size: 0.9em;
+    line-height: var(--block-size)
+}
+
