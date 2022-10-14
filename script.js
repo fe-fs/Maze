@@ -1,61 +1,49 @@
 let maze = [
     [0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+    [0, 4, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0],
     [0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0],
     [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0],
     [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0],
     [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0],
     [0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
     [0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0],
-    [0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1],
     [0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 3],
 ]
 
-let player = [0, 0] //start position for player vertical | horizontal
-let bag = 0
+let player = [0, 0]; //position for player vertical | horizontal
+let bag = 0;
 
 //maze size 12x12 
 const ROWS = 12;
-const COLS = 12
+const COLS = 12;
 
-const EMPTY = 0
-const WALL = 1
-const PLAYER = 2
-const EXIT = 3
-const EXIT_READY = 6
-const DIAMOND = 4
-const DIAMOND_COUNT = 12
+//Maze characters for positioning
+const EMPTY = 0;
+const WALL = 1;
+const PLAYER = 2;
+const EXIT = 3;
+const HARVEST = 4;
 
-const DOWN = 40
-const UP = 38
-const LEFT = 37
-const RIGHT = 39
+const HARVEST_COUNT = 2; //you have to change this for the amount you are collecting inside your game!
+
+
+//Keyboard controlers (arrows) | JavaScript KeyCode
+const DOWN = 40;
+const UP = 38;
+const LEFT = 37;
+const RIGHT = 39;
+
 
 window.onload = () => {
-    generateDiamond()
     createBoard()
     renderMaze()
 }
 
-const generateDiamond = () => {
-    let count = 0
 
-    do {
-        let row = Math.floor(Math.random() * ROWS)
-        let col = Math.floor(Math.random() * COLS)
-        if (maze[row][col] === EMPTY && 
-            row !== 0 && col !==0 &&
-            row !== ROWS -1 && col !== COLS -1) {
-            maze[row][col] = DIAMOND
-            count++
-        }
-
-    } while (count !== DIAMOND_COUNT)
-}
-
-const createBoard = () => {
+function createBoard(){
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) { 
             const block = document.createElement('div')
@@ -66,11 +54,10 @@ const createBoard = () => {
 }
 
 const renderMaze = () => {
-    if (bag < DIAMOND_COUNT) {
-        document.querySelector('.info').textContent = 'collect all the gems'
+    if (bag < HARVEST_COUNT) {
+        document.querySelector('.info').textContent = 'collect all the gems';
     } else {
-        maze[ROWS-1][COLS-1] = EXIT_READY
-        document.querySelector('.info').textContent = 'go to the teleport'
+        document.querySelector('.info').textContent = 'Go to exit';
     }
 
     for (let row = 0; row < ROWS; row++) {
@@ -85,10 +72,8 @@ const renderMaze = () => {
                     itemClass = 'human'; break
                 case EXIT:
                     itemClass = 'exit'; break
-                case EXIT_READY:
-                itemClass = 'exit show'; break
-                case DIAMOND:
-                    itemClass = 'diamond'; break
+                case HARVEST:
+                    itemClass = 'harvestItens'; break
                 default:
                     itemClass = 'empty'
             }
@@ -98,7 +83,7 @@ const renderMaze = () => {
         }
     }
     const id = `#id-${player[1]}-${player[0]}`
-    if (!(bag === DIAMOND_COUNT && player[1] === COLS - 1 && player[0] === ROWS - 1)) {
+    if (!(bag === HARVEST_COUNT && player[1] === COLS - 1 && player[0] === ROWS - 1)) {
         document.querySelector(id).className = 'block player'
     }
     else {
@@ -107,10 +92,12 @@ const renderMaze = () => {
     }
 
 
-    document.querySelector('.diamond-count').textContent = `${bag} / ${DIAMOND_COUNT}`
+    document.querySelector('.harvest-count').textContent = `${bag} / ${HARVEST_COUNT}`
 }
 
-window.onkeydown = (event) => {
+//keyboard events
+window.onkeydown = (event) => 
+{
     switch (event.keyCode) {
         case DOWN:
             direction = DOWN;  break
@@ -124,13 +111,15 @@ window.onkeydown = (event) => {
             direction = 0
     }
 
+    //checking if controller key was pressed
+    //call the change player position function using the direction value
     if (direction !== 0) {
-        changePlayerPos(direction)
+        changePlayerPos(direction);
     }
 }
 
 const changePlayerPos = (direction) => {
-    let [dy, dx] = [0, 0];
+    let [dy, dx] = [0, 0]; 
     switch (direction) {
         case UP:
             dy = -1; break;
@@ -151,7 +140,7 @@ const changePlayerPos = (direction) => {
         maze[y][x] !== WALL) {
             player = [y, x]
 
-            if (maze[y][x] === DIAMOND) {
+            if (maze[y][x] === HARVEST) {
                 maze[y][x] = EMPTY
                 bag++
             }

@@ -1,22 +1,22 @@
 body{
-    margin-top: 300px;
-    margin-bottom: 100%;
-    margin-left: 25%;
-    margin-right: 25%;
-    padding: 0;
+    margin: 0;
+    display: block;
     color: #677082; /*for text*/
     font-family: Arial;
-    background-color: rgb(160, 125, 60);
+    background-color: rgb(243, 181, 124);
     
 }
 
 .frame{
     --block-size:35px;
-    background-color: rgb(203, 230, 172);
+    background-color: rgb(204, 234, 170);
     border-radius: 15px;
 
     /*centralize frame*/
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: grid;
 
 }
@@ -47,7 +47,7 @@ body{
     box-sizing: border-box;
 }
 
-.diamond{
+.harvestItens{
     background: rgb(25, 70, 161); 
     box-sizing: border-box;
 }
@@ -63,13 +63,13 @@ body{
 }
 
 /*Score and texts*/
-.diamond-count,
+.harvest-count,
 .footer {
     line-height: 35px;
     padding-left: 15px;
 }
 
-.diamond-count {
+.harvest-count {
     float: right;
 }
 
